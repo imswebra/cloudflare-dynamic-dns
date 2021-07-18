@@ -1,11 +1,13 @@
-# cloudflare-dyanmic-dns
-
-Cloudflare DDNS curl scripts that calls CF-API (v4) directly
+# Cloudflare Dynamic DNS
+cURL-based shell scripts which call Cloudflare's v4 API to update the IP of an A record, allowing for DDNS functionality.
+- Lightweight and readable
+- Simple setup
+- Uses [Cloudflare's Patch DNS Record](https://api.cloudflare.com/#dns-records-for-a-zone-patch-dns-record) endpoint
+- Only hits Cloudflare's API if the IP has changed (caches last known IP)
 
 ## Setup
-
-Instructions and descriptions of variables can be found at the top of each shell script.
-
-1) Run `cloudflare-get-zones.sh` to get the zone ID of your domain
-2) Run `cloudflare-get-dns-id.sh` to get the record ID for the subdomain
-3) Put all variables into `cloudflare-ddns.sh`, run it as a test and then set up with cron as `* * * * * ./cloudflare-ddns.sh` (run every minute, will only make request to Cloudflare is IP is different to one cached)
+1. Create an A record to be updated by this script if you do not have one already. Set the IP to a bogus value so we can confirm the script worked.
+1. Create a [Cloudflare API token](https://developers.cloudflare.com/api/tokens/create) with Zone Read and DNS Edit permissions.
+1. Edit the top portion of `config.txt`, adding your API token, root domain name, and name of the record.
+1. Run the setup script (`./setup.sh`) to fetch the other required values from Cloudflare, verify that they have been written to `config.txt`.
+1. Run the main script (`./cloudflare-ddns.sh`) and verify its success based on the API response and if the record's IP was updated in the Cloudflare dashboard. If so, setup a cron job or equivalent to run this script every X minutes/hours/days.
