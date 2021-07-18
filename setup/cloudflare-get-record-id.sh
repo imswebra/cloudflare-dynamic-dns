@@ -5,11 +5,10 @@
 source ./config.txt
 
 echo "Getting Record ID for subdomain from Cloudflare API..."
-
-if ! response=$(curl --fail-with-body -s \
+response=$(curl -s \
     -X GET "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/dns_records?name=$CLOUDFLARE_RECORD_NAME" \
     -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type:application/json")
-then
+if echo $response | grep -q '"success":false'; then
     echo "Cloudflare API call failed with the following information:"
     echo $response
     exit 1

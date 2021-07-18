@@ -5,10 +5,10 @@
 source ./config.txt
 
 echo "Getting Zone ID for domain from Cloudflare API..."
-if ! response=$(curl --fail-with-body -s \
+response=$(curl -s \
     -X GET "https://api.cloudflare.com/client/v4/zones?name=$CLOUDFLARE_DOMAIN_NAME" \
     -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type:application/json")
-then
+if echo $response | grep -q '"success":false'; then
     echo "Cloudflare API call failed with the following information:"
     echo $response
     exit 1
