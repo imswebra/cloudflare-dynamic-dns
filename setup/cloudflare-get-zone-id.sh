@@ -2,7 +2,7 @@
 
 # Queries the Cloudflare API for the Zone ID of the domain name, writes result to config.txt
 
-source ./config.txt
+. ./config.txt
 
 echo "Getting Zone ID for domain from Cloudflare API..."
 response=$(curl -s \

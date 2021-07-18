@@ -2,7 +2,7 @@
 
 # Queries the Cloudflare API for the Record ID of the subdomain, writes result to config.txt
 
-source ./config.txt
+. ./config.txt
 
 echo "Getting Record ID for subdomain from Cloudflare API..."
 response=$(curl -s \

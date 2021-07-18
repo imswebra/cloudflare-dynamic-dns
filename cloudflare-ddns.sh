@@ -2,7 +2,7 @@
 
 # Main script which updates the A record, should be used with cron or equivalent
 
-source ./config.txt
+. ./config.txt
 
 # Fetch the current public IP address
 if ! PUBLIC_IP=$(curl -fs https://api.ipify.org); then
