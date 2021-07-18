@@ -18,16 +18,9 @@ fi
 echo $PUBLIC_IP > $IP_RECORD # Record new IP
 
 # Record the new public IP address on Cloudflare using API v4
-RECORD=$(cat <<EOF
-    { "type": "A",
-    "name": "$CLOUDFLARE_RECORD_NAME",
-    "content": "$PUBLIC_IP",
-    "ttl": 1,
-    "proxied": false }
-EOF
-)
-curl "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/dns_records/$CLOUDFLARE_RECORD_ID" \
-    -X PUT \
+DATA=$(printf '{"content":"%s"}' "$PUBLIC_IP")
+curl --fail-with-body -s \
+    -X PATCH "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/dns_records/$CLOUDFLARE_RECORD_ID" \
     -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
     -H "Content-Type: application/json" \
-    -d "$RECORD"
+    -d "$DATA"
