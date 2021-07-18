@@ -1,4 +1,4 @@
-#/usr/bin/env sh
+#!/usr/bin/env sh
 
 # Queries the Cloudflare API for the Zone ID of the domain name, writes result to config.txt
 

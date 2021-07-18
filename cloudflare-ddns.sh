@@ -1,4 +1,4 @@
-#/usr/bin/env sh
+#!/usr/bin/env sh
 
 # Main script which updates the A record, should be used with cron or equivalent
 

@@ -1,4 +1,4 @@
-#/usr/bin/env sh
+#!/usr/bin/env sh
 
 # Queries the Cloudflare API for the Record ID of the subdomain, writes result to config.txt
 
