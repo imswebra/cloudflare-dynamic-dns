@@ -1,0 +1,5 @@
+CLOUDFLARE_API_TOKEN=YourCloudflareAPITokenGoesHere
+CLOUDFLARE_DOMAIN_NAME=myDomain.com
+
+# Run setup.sh to populate these values
+CLOUDFLARE_ZONE_ID=
