@@ -1,5 +1,10 @@
+# Cloudflare API token with zone read and DNS edit permissions
 CLOUDFLARE_API_TOKEN=YourCloudflareAPITokenGoesHere
+# Your root domain name
 CLOUDFLARE_DOMAIN_NAME=myDomain.com
+# Your subdomain whose A record you want to update
+CLOUDFLARE_SUBDOMAIN=subdomain.myDomain.com
 
 # Run setup.sh to populate these values
 CLOUDFLARE_ZONE_ID=
+CLOUDFLARE_RECORD_ID=

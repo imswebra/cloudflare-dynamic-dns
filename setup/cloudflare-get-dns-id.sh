@@ -1,12 +1,21 @@
 #/usr/bin/env sh
 
-# Returns JSON list of DNS entries matching the subdomain, grab the ID from the valid entry
+# Queries the Cloudflare API for the Record ID of the subdomain, writes result to config.txt
 
-# Variables:
-#   CLOUDFLARE_API_TOKEN - Cloudflare API token from Cloudflare dashboard (Authentication tab)
-#   CLOUDFLARE_ZONE_ID   - Zone ID from cloudflare-get-zones.sh script
-#   CLOUDFLARE_SUBDOMAIN - Subdomain w/ the root domain for the record to edit e.g. dynamic.github.com
+source ./config.txt
 
-curl -X GET "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/dns_records?name=$CLOUDFLARE_SUBDOMAIN" \
-  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
-  -H "Content-Type:application/json"
+echo "Getting Record ID for subdomain from Cloudflare API..."
+
+if ! response=$(curl --fail-with-body -s \
+    -X GET "https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/dns_records?name=$CLOUDFLARE_SUBDOMAIN" \
+    -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type:application/json")
+then
+    echo "Cloudflare API call failed with the following information:"
+    echo $response
+    exit 1
+fi
+
+id=$(echo $response | grep -Po '"id":"\K.*?(?=")' | head -1)
+echo "Got Record ID: $id"
+echo "Writing to config.txt"
+sed -i "s/\(^CLOUDFLARE_RECORD_ID=\)\(.*\)/\1$id/" ./config.txt
