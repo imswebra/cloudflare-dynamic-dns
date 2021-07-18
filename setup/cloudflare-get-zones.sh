@@ -6,4 +6,13 @@
 #   CLOUDFLARE_API_TOKEN   - Cloudflare API token from Cloudflare dashboard (Authentication tab)
 #   CLOUDFLARE_DOMAIN_NAME - Domain name e.g. github.com
 
-curl -X GET "https://api.cloudflare.com/client/v4/zones?name=$CLOUDFLARE_DOMAIN_NAME" -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type:application/json"
+if ! response=$(curl --fail-with-body -s \
+    -X GET "https://api.cloudflare.com/client/v4/zones?name=$CLOUDFLARE_DOMAIN_NAME" \
+    -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" -H "Content-Type:application/json");
+then
+    echo "Cloudflare API call failed with the following information:"
+    echo $response
+    exit 1
+fi
+
+echo "Got Zone ID: $(echo $response | grep -Po '"id":"\K.*?(?=")' | head -1)"
